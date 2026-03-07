@@ -53,7 +53,7 @@ class _SplashScreenState extends State<SplashScreen>
         child: SlideTransition(
           position: _slideAnimation,
           child: Text(
-            'C@ffee..',
+            'C@ffeeVerse..',
             style: GoogleFonts.bebasNeue(fontSize: 42, color: Colors.white),
           ),
         ),

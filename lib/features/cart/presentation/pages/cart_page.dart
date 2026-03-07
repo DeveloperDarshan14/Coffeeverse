@@ -33,7 +33,7 @@ class _CartPageState extends State<CartPage> {
     var options = {
       'key': 'rzp_test_Ran8ybqg1nyOoy',
       'amount': totalAmt * 100,
-      'name': 'Hambre App',
+      'name': 'CoffeeVerse App',
       'description': 'Order Payment',
       'prefill': {
         'contact': '9999999999',

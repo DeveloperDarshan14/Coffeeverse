@@ -1,6 +1,7 @@
 import 'package:coffeeshopui/features/coffee/data/models/coffee_types_model.dart';
 import 'package:coffeeshopui/features/coffee/presentation/bloc/favorite_bloc/favorite_bloc.dart';
 import 'package:coffeeshopui/features/coffee/presentation/bloc/favorite_bloc/favorite_state.dart';
+import 'package:coffeeshopui/features/coffee/presentation/pages/address_selection_page.dart';
 import 'package:coffeeshopui/features/coffee/presentation/pages/profile_page.dart';
 import 'package:coffeeshopui/features/coffee/presentation/pages/search_page.dart';
 import 'package:flutter/material.dart';
@@ -9,11 +10,11 @@ import '../../data/models/coffee_details_model.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../widgets/coffee_tile_row.dart';
 import '../widgets/coffee_types.dart';
+import '../widgets/custom_app_bar.dart';
 import 'coffee_details_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
-
   @override
   State<HomePage> createState() => _HomePageState();
 }
@@ -97,28 +98,11 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        leading: const Icon(Icons.menu),
-        actions: [
-          Padding(
-            padding: EdgeInsets.only(right: 20.0),
-            child: InkWell(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => ProfilePage()),
-                );
-              },
-              child: Icon(Icons.person),
-            ),
-          ),
-        ],
-      ),
+      appBar: CustomAppBar(),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            const SizedBox(height: 20),
+
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 25.0),
               child: Text(
