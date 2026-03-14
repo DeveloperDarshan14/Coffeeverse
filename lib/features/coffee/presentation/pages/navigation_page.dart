@@ -1,69 +1,97 @@
-import 'package:coffeeshopui/features/cart/presentation/pages/cart_page.dart';
-import 'package:coffeeshopui/features/coffee/presentation/pages/favorite_page.dart';
-import 'package:coffeeshopui/features/coffee/presentation/pages/homepage.dart';
+import 'package:coffeeshopui/core/router/routes_names.dart';
 import 'package:flutter/material.dart';
-import 'notification_page.dart';
-
+import 'package:flutter/services.dart';
+import 'package:go_router/go_router.dart';
 
 class NavigationPage extends StatefulWidget {
-  const NavigationPage({super.key});
+  final Widget child;
+  const NavigationPage({super.key, required this.child});
+
   @override
   State<NavigationPage> createState() => _NavigationPageState();
 }
 
 class _NavigationPageState extends State<NavigationPage> {
+  late int currentIndex = 0;
 
-  late int _selectedIndex = 0;
-
-  List<Widget> pages=[
-    HomePage(),
-    CartPage(),
-    FavoritePage(),
-    NotificationPage(),
+  List<String> routes = [
+    RoutesNames.home,
+    RoutesNames.cart,
+    RoutesNames.favorite,
+    RoutesNames.notification,
   ];
 
-
   void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
+    context.go(routes[index]);
   }
-
 
   @override
   Widget build(BuildContext context) {
+    final String location = GoRouterState.of(context).uri.toString();
+    int currentIndex = routes.indexWhere((route) => location.startsWith(route));
+
+    print('current index is $currentIndex');
+
+    if (currentIndex < 0) currentIndex = 0;
 
     return PopScope(
-      canPop: _selectedIndex==0,
-      onPopInvoked: (didpop) {
-        if(_selectedIndex !=0){
+      canPop: false,
+      onPopInvokedWithResult: (didpop, result) async {
+        if (didpop) return;
+        if (currentIndex != 0) {
           setState(() {
-            _selectedIndex=0;
+            currentIndex = 0;
           });
+
+          context.go(RoutesNames.home);
+          return;
+        }
+        bool? exit = await showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text("Exit App"),
+            content: const Text("Do you want to exit the app?"),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context, false),
+                child: const Text("No"),
+              ),
+              TextButton(
+                onPressed: () => Navigator.pop(context, true),
+                child: const Text("Yes"),
+              ),
+            ],
+          ),
+        );
+
+        if (exit == true) {
+          SystemNavigator.pop();
         }
       },
       child: Scaffold(
         bottomNavigationBar: BottomNavigationBar(
-          currentIndex: _selectedIndex,
-          onTap:
-          _onItemTapped,
+          currentIndex: currentIndex,
+          onTap: _onItemTapped,
           type: BottomNavigationBarType.fixed,
           selectedItemColor: Colors.orange,
           unselectedItemColor: Colors.grey,
           items: [
-
-            BottomNavigationBarItem(icon: Icon(Icons.home), label:  'Home'),
-            BottomNavigationBarItem(icon: Icon(Icons.shopping_bag), label: 'Cart'),
-            BottomNavigationBarItem(icon: Icon(Icons.favorite), label:  'Favorite'),
-            BottomNavigationBarItem(icon: Icon(Icons.notifications), label: 'Notifications'),
-
+            BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.shopping_bag),
+              label: 'Cart',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.favorite),
+              label: 'Favorite',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.notifications),
+              label: 'Notifications',
+            ),
           ],
-
         ),
-        body: IndexedStack(
-          index: _selectedIndex,
-          children: pages,
-        ),
+        body: widget.child,
       ),
     );
   }

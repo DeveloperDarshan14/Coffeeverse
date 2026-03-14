@@ -30,7 +30,7 @@ class CoffeeTileRow extends StatelessWidget {
               child: SizedBox(
                 height: 140,
                 width: double.infinity,
-                child: Image.asset(coffee.coffeeImage, fit: BoxFit.cover),
+                child: Image.asset(coffee.coffeeImage, fit: BoxFit.cover,gaplessPlayback: true,),
               ),
             ),
             const SizedBox(height: 12),

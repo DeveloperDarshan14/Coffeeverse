@@ -56,16 +56,16 @@ class _CartPageState extends State<CartPage> {
 
     context.read<CartBloc>().add(ClearCartEvent());
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(
-          builder: (context) => NavigationPage(
-          ),
-        ),
-            (route) => false,
-      );
-    });
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   Navigator.pushAndRemoveUntil(
+    //     context,
+    //     MaterialPageRoute(
+    //       builder: (context) => NavigationPage(child: ,
+    //       ),
+    //     ),
+    //         (route) => false,
+    //   );
+    // });
   }
 
   void _handlePaymentError(PaymentFailureResponse response) {

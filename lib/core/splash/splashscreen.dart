@@ -1,6 +1,11 @@
+import 'package:coffeeshopui/core/constants/app_constants.dart';
+import 'package:coffeeshopui/core/router/routes_names.dart';
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../../features/coffee/presentation/pages/navigation_page.dart';
+
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -14,6 +19,8 @@ class _SplashScreenState extends State<SplashScreen>
 
   late AnimationController _controller;
   late Animation<Offset> _slideAnimation;
+  var _currentAddress='';
+
 
   @override
   void initState() {
@@ -30,14 +37,84 @@ class _SplashScreenState extends State<SplashScreen>
     _controller.forward();
     _controller.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (_) => const NavigationPage()),
-        );
+       context.go(RoutesNames.home);
       }
     });
+    _determinePosition();
   }
 
+
+  Future<Position> _determinePosition() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    // Check if location service is enabled
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      return Future.error('Location services are disabled.');
+    }
+
+    // Check permission
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        return Future.error('Location permissions are denied');
+      }
+    }
+
+    // Handle permanently denied permission
+    if (permission == LocationPermission.deniedForever) {
+      return Future.error(
+        'Location permissions are permanently denied, we cannot request permissions.',
+      );
+    }
+
+    // Location settings
+    final LocationSettings locationSettings = const LocationSettings(
+      accuracy: LocationAccuracy.high,
+      distanceFilter: 100,
+    );
+
+    // Get position
+    Position position =
+    await Geolocator.getCurrentPosition(locationSettings: locationSettings);
+
+    double lat = position.latitude;
+    double long = position.longitude;
+
+    print("Latitude: $lat and Longitude: $long");
+
+    // Get address from lat long
+    await _getAddressFromLatLng(position);
+
+    return position;
+  }
+
+  Future<void> _getAddressFromLatLng(Position position) async {
+    try {
+      List<Placemark> placemarks =
+      await placemarkFromCoordinates(position.latitude, position.longitude);
+
+      Placemark place = placemarks[0];
+
+      setState(() {
+        _currentAddress =
+        '${place.street}, ${place.subLocality}, ${place.locality}, ${place.postalCode}';
+        print('current Address==>>>>  ${_currentAddress} ${place.name}, ${place.subLocality}, ${place.locality}, ${place.postalCode}');
+      });
+      print("Name: ${place.name}");
+      print("Street: ${place.street}");
+      print("Thoroughfare: ${place.thoroughfare}");
+      print("SubLocality: ${place.subLocality}");
+      print("Locality: ${place.locality}");
+      print("SubAdministrativeArea: ${place.subAdministrativeArea}");
+      print("PostalCode: ${place.postalCode}");
+
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+  }
 
   @override
   void dispose() {

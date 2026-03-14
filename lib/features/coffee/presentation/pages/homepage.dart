@@ -1,17 +1,16 @@
+import 'package:coffeeshopui/core/router/routes_names.dart';
 import 'package:coffeeshopui/features/coffee/data/models/coffee_types_model.dart';
 import 'package:coffeeshopui/features/coffee/presentation/bloc/favorite_bloc/favorite_bloc.dart';
 import 'package:coffeeshopui/features/coffee/presentation/bloc/favorite_bloc/favorite_state.dart';
-import 'package:coffeeshopui/features/coffee/presentation/pages/address_selection_page.dart';
-import 'package:coffeeshopui/features/coffee/presentation/pages/profile_page.dart';
 import 'package:coffeeshopui/features/coffee/presentation/pages/search_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import '../../data/models/coffee_details_model.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../widgets/coffee_tile_row.dart';
 import '../widgets/coffee_types.dart';
 import '../widgets/custom_app_bar.dart';
-import 'coffee_details_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -89,6 +88,25 @@ class _HomePageState extends State<HomePage> {
   final FocusNode _focusNode = FocusNode();
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+    _preloadImages();
+  }
+
+  void _preloadImages() {
+    for (var coffee in coffeeDetails) {
+      precacheImage(AssetImage(coffee.coffeeImage), context);
+    }
+  }
+
+  @override
   void dispose() {
     searchController.dispose();
     FocusManager.instance.primaryFocus?.unfocus();
@@ -102,7 +120,6 @@ class _HomePageState extends State<HomePage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 25.0),
               child: Text(
@@ -118,13 +135,9 @@ class _HomePageState extends State<HomePage> {
                 cursorColor: Colors.orange,
                 controller: searchController,
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => SearchPage()),
-                  );
+                  context.push(RoutesNames.searchPage);
                   FocusManager.instance.primaryFocus?.unfocus();
                 },
-
                 decoration: InputDecoration(
                   prefixIcon: const Icon(Icons.search),
                   hintText: 'Find your coffee...',
@@ -146,7 +159,9 @@ class _HomePageState extends State<HomePage> {
                     itemCount: coffeeTypes.length,
                     itemBuilder: (context, index) {
                       return GestureDetector(
-                        onTap: () => context.read<FavoriteBloc>().add(SetSelectedCoffeeTypes(index)),
+                        onTap: () => context.read<FavoriteBloc>().add(
+                          SetSelectedCoffeeTypes(index),
+                        ),
                         child: CoffeeTypes(
                           coffeeType: coffeeTypes[index].coffeeType,
                           isSelected: state.selectedIndex == index,
@@ -169,25 +184,11 @@ class _HomePageState extends State<HomePage> {
                   final coffee = coffeeDetails[index];
                   return GestureDetector(
                     onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              CoffeeDetailsPage(
-                                coffeeDetailsModel: CoffeeDetailsModel(
-                                  coffeeName: coffee.coffeeName,
-                                  coffeePrice: coffee.coffeePrice,
-                                  coffeeImage: coffee.coffeeImage,
-                                  coffeeDesc: coffee.coffeeDesc,
-                                  largePrice: coffee.largePrice,
-                                  smallPrice: coffee.smallPrice,
-                                  mediumPrice: coffee.mediumPrice,
-                                ),
-                              ),
-                        ),
+                      context.push(
+                        RoutesNames.coffeeDetailsPage,
+                        extra: coffee,
                       );
                     },
-
                     child: CoffeeTileRow(coffee: coffee),
                   );
                 },

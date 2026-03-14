@@ -38,6 +38,9 @@ dependencies:
   bloc:
   flutter_bloc:
   razorpay_flutter:
+  geolocator:
+  geocoding:
+  go_router:
 
 
 dev_dependencies:
