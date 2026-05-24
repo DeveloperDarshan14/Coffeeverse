@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-
-
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
 
@@ -15,17 +13,17 @@ class ProfilePage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     CircleAvatar(
                       backgroundColor: Colors.grey.shade900,
-                      child:  InkWell(
-                           onTap: (){
-                             Navigator.pop(context);
-                           },
-                          child: Icon(Icons.arrow_back, color: Colors.white)),
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: Icon(Icons.arrow_back, color: Colors.white),
+                      ),
                     ),
                     const Text(
                       "Profile",
@@ -44,7 +42,6 @@ class ProfilePage extends StatelessWidget {
 
                 const SizedBox(height: 25),
 
-                /// Profile Card
                 Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
@@ -74,13 +71,10 @@ class ProfilePage extends StatelessWidget {
                           SizedBox(height: 4),
                           Text(
                             "alishon35",
-                            style: TextStyle(
-                              color: Colors.grey,
-                              fontSize: 14,
-                            ),
+                            style: TextStyle(color: Colors.grey, fontSize: 14),
                           ),
                         ],
-                      )
+                      ),
                     ],
                   ),
                 ),
@@ -94,7 +88,6 @@ class ProfilePage extends StatelessWidget {
 
                 const SizedBox(height: 15),
 
-                /// Settings Card 1
                 Container(
                   decoration: BoxDecoration(
                     color: Colors.grey.shade900,
@@ -102,8 +95,7 @@ class ProfilePage extends StatelessWidget {
                   ),
                   child: Column(
                     children: const [
-                      ProfileTile(
-                          icon: Icons.payment, title: "Payment"),
+                      ProfileTile(icon: Icons.payment, title: "Payment"),
                       Divider(color: Colors.black),
                       ProfileTile(icon: Icons.local_offer, title: "Promo"),
                       Divider(color: Colors.black),
@@ -123,7 +115,6 @@ class ProfilePage extends StatelessWidget {
 
                 const SizedBox(height: 15),
 
-                /// Settings Card 2
                 Container(
                   decoration: BoxDecoration(
                     color: Colors.grey.shade900,
@@ -138,12 +129,13 @@ class ProfilePage extends StatelessWidget {
                           "Notification",
                           style: TextStyle(color: Colors.white),
                         ),
-                        secondary: const Icon(Icons.notifications,
-                            color: Colors.white),
+                        secondary: const Icon(
+                          Icons.notifications,
+                          color: Colors.white,
+                        ),
                       ),
                       const Divider(color: Colors.black),
-                      const ProfileTile(
-                          icon: Icons.folder, title: "My Data"),
+                      const ProfileTile(icon: Icons.folder, title: "My Data"),
                     ],
                   ),
                 ),
@@ -151,40 +143,24 @@ class ProfilePage extends StatelessWidget {
             ),
           ),
         ),
-
-    )
+      ),
     );
   }
-
-
 }
 
 class ProfileTile extends StatelessWidget {
   final IconData icon;
   final String title;
 
-  const ProfileTile({
-    super.key,
-    required this.icon,
-    required this.title,
-  });
+  const ProfileTile({super.key, required this.icon, required this.title});
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
       leading: Icon(icon, color: Colors.white),
-      title: Text(
-        title,
-        style: const TextStyle(color: Colors.white),
-      ),
+      title: Text(title, style: const TextStyle(color: Colors.white)),
       trailing: const Icon(Icons.chevron_right, color: Colors.white),
-      onTap: () {
-
-      },
-
-
-
-
+      onTap: () {},
     );
   }
 }

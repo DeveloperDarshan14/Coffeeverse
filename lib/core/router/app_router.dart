@@ -2,10 +2,12 @@ import 'package:coffeeshopui/features/cart/presentation/pages/cart_page.dart';
 import 'package:coffeeshopui/features/coffee/presentation/pages/favorite_page.dart';
 import 'package:coffeeshopui/features/coffee/presentation/pages/homepage.dart';
 import 'package:coffeeshopui/features/coffee/presentation/pages/notification_page.dart';
+import 'package:coffeeshopui/features/coffee/presentation/pages/profile_page.dart';
 import 'package:go_router/go_router.dart';
 import '../../features/coffee/data/models/coffee_details_model.dart';
 import '../../features/coffee/presentation/pages/coffee_details_page.dart';
 import '../../features/coffee/presentation/pages/navigation_page.dart';
+import '../../features/coffee/presentation/pages/search_page.dart';
 import '../splash/splashscreen.dart';
 
 class AppRouter {
@@ -40,14 +42,9 @@ class AppRouter {
           return CoffeeDetailsPage(coffeeDetailsModel: coffee);
         },
       ),
-      GoRoute(
-        path: '/searchPage',
-        builder: (context, state) {
-          final coffee = state.extra as CoffeeDetailsModel;
-          return CoffeeDetailsPage(coffeeDetailsModel: coffee);
-        },
-      ),
+      GoRoute(path: '/searchPage', builder: (context, state) => SearchPage()),
 
+      GoRoute(path: '/profilePage', builder: (context, state) => ProfilePage()),
     ],
   );
 }

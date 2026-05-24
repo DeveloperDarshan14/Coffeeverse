@@ -1,5 +1,7 @@
+import 'package:coffeeshopui/core/router/routes_names.dart';
 import 'package:coffeeshopui/features/coffee/presentation/pages/address_selection_page.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBar({super.key});
@@ -12,7 +14,6 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       elevation: 0,
       automaticallyImplyLeading: false,
       title: Row(
-
         children: [
           Expanded(
             child: InkWell(
@@ -30,7 +31,6 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                   Padding(
                     padding: .only(right: 8.0),
                     child: Row(
-
                       children: const [
                         Icon(Icons.location_on, color: Colors.white, size: 20),
                         SizedBox(width: 4),
@@ -52,13 +52,13 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                     style: TextStyle(fontSize: 13, color: Colors.white),
                   ),
                 ],
-              )
+              ),
             ),
           ),
-          InkWell(
-            onTap: () {},
-
-
+          GestureDetector(
+            onTap: () {
+              context.push(RoutesNames.profilePage);
+            },
             child: Icon(Icons.person, color: Colors.white),
           ),
         ],

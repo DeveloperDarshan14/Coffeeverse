@@ -7,4 +7,5 @@ class RoutesNames {
   static const notification = '/notification';
   static const coffeeDetailsPage = '/coffeeDetailsPage';
   static const searchPage = '/searchPage';
+  static const profilePage='/profilePage';
 }

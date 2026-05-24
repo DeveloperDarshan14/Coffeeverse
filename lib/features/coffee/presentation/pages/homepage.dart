@@ -2,7 +2,7 @@ import 'package:coffeeshopui/core/router/routes_names.dart';
 import 'package:coffeeshopui/features/coffee/data/models/coffee_types_model.dart';
 import 'package:coffeeshopui/features/coffee/presentation/bloc/favorite_bloc/favorite_bloc.dart';
 import 'package:coffeeshopui/features/coffee/presentation/bloc/favorite_bloc/favorite_state.dart';
-import 'package:coffeeshopui/features/coffee/presentation/pages/search_page.dart';
+import 'package:coffeeshopui/features/coffee/presentation/widgets/coffee_tile_row_homepage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -82,6 +82,24 @@ class _HomePageState extends State<HomePage> {
       largePrice: 14.0,
       smallPrice: 4.0,
     ),
+    CoffeeDetailsModel(
+      coffeeDesc: "with Almond Milk",
+      coffeeImage: "assets/images/cappucino.jpg",
+      coffeeName: "Americano",
+      coffeePrice: 25.0,
+      mediumPrice: 12.0,
+      largePrice: 14.0,
+      smallPrice: 4.0,
+    ),
+    CoffeeDetailsModel(
+      coffeeDesc: "with Almond Milk",
+      coffeeImage: "assets/images/cappucino.jpg",
+      coffeeName: "Americano",
+      coffeePrice: 25.0,
+      mediumPrice: 12.0,
+      largePrice: 14.0,
+      smallPrice: 4.0,
+    ),
   ];
 
   final searchController = TextEditingController();
@@ -89,13 +107,11 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 
   @override
   void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
     super.didChangeDependencies();
     _preloadImages();
   }
@@ -173,7 +189,6 @@ class _HomePageState extends State<HomePage> {
               },
             ),
             const SizedBox(height: 10),
-
             SizedBox(
               height: 280,
               child: ListView.builder(
@@ -192,6 +207,38 @@ class _HomePageState extends State<HomePage> {
                     child: CoffeeTileRow(coffee: coffee),
                   );
                 },
+              ),
+            ),
+            const SizedBox(height: 10),
+
+            Padding(
+              padding: const EdgeInsets.only(left: 25.0),
+              child: SizedBox(
+                width: double.infinity,
+                child: const Text(
+                  'Best Seller',
+                  textAlign: TextAlign.left,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(height: 10),
+            Padding(
+              padding: const EdgeInsets.only(right: 10, left: 10, bottom: 20),
+              child: SizedBox(
+                child: ListView.builder(
+                  physics: NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: coffeeDetails.length,
+                  itemBuilder: (context, index) {
+                    final coffee = coffeeDetails[index];
+                    return CoffeeTileRowHomepage(coffee: coffee);
+                  },
+                ),
               ),
             ),
           ],
